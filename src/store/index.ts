@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import ProgressBarSlice from './reducers/ProgressBarSlice';
+import SidebarSlice from './reducers/SidebarSlice';
 
 const store = configureStore({
   reducer: {
     progressBar: ProgressBarSlice,
+    sidebar: SidebarSlice,
   },
 });
 
