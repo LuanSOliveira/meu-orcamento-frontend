@@ -27,9 +27,7 @@ const ItenSidebar = ({ item }: Props) => {
       <ListItemButton
         onClick={item.label == 'Configurações' ? handleClick : undefined}
       >
-        <ListItemIcon>
-          <item.icone sx={{ color: 'white' }} />
-        </ListItemIcon>
+        <ListItemIcon>{item.icone}</ListItemIcon>
         <ListItemText primary={item.label} />
         {item.label == 'Configurações' ? (
           open ? (
@@ -42,7 +40,7 @@ const ItenSidebar = ({ item }: Props) => {
 
       <Collapse in={open} timeout="auto">
         {listConfig.map((item) => (
-          <ListItemButton sx={{ pl: 9 }}>
+          <ListItemButton key={item} sx={{ pl: 9 }}>
             <ListItemText primary={item} />
           </ListItemButton>
         ))}

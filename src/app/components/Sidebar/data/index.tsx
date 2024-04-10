@@ -1,12 +1,10 @@
-import { SvgIconTypeMap } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 export interface ListaProps {
   label: string;
-  icone: OverridableComponent<SvgIconTypeMap<{}, 'svg'>>;
+  icone: React.ReactNode;
   expand: boolean;
   children: string[];
 }
@@ -14,19 +12,19 @@ export interface ListaProps {
 export const ListSideBarItens: ListaProps[] = [
   {
     label: 'Inicio',
-    icone: HomeIcon,
+    icone: <HomeIcon sx={{ color: 'white' }} />,
     expand: false,
     children: [],
   },
   {
     label: 'Configurações',
-    icone: SettingsIcon,
+    icone: <SettingsIcon sx={{ color: 'white' }} />,
     expand: true,
     children: ['Linhas', 'Materias', 'Parametros'],
   },
   {
     label: 'Orçamento',
-    icone: MonetizationOnIcon,
+    icone: <MonetizationOnIcon sx={{ color: 'white' }} />,
     expand: false,
     children: [],
   },
