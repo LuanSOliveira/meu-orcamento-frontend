@@ -11,13 +11,22 @@ import {
   systemParamsFormResolver,
 } from '@/shared/formSchemas';
 import { useState } from 'react';
-import { useGetSystemParams } from '@/hooks/Queries';
-import { usePostSystemParams } from '@/hooks/Queries/SystemParamsQueries/usePostSystemParams';
+import {
+  useGetSystemParams,
+  usePatchSystemParams,
+  usePostSystemParams,
+} from '@/hooks/Queries';
 import { ISystemParamsDTO } from '../../types';
+import { useRouter } from 'next/navigation';
+import { BUDGET_ROUTS } from '@/shared/routes/routes';
 
 const SystemParamsForm = () => {
+  const router = useRouter();
   const { data: systemParamsList } = useGetSystemParams({});
   const { onPostSystemParams } = usePostSystemParams();
+  const { onPatchSystemParams } = usePatchSystemParams(
+    systemParamsList ? systemParamsList[0].id : '',
+  );
   const {
     handleSubmit,
     setValue,
@@ -55,17 +64,15 @@ const SystemParamsForm = () => {
   }
 
   function OnSaveForm(data: SystemParamsFormProps) {
+    const params: ISystemParamsDTO = {
+      salaryPerMonth: parseFloat(data.salary.replace('.', '')),
+      workingHoursPerMonth: parseFloat(data.hours.replace('.', '')),
+      profit: parseFloat(data.percent.replace('.', '')),
+    };
     if (systemParamsList && systemParamsList?.length > 0) {
-      console.log('Lista em atualização');
-      console.log(data);
+      onPatchSystemParams(params);
+      console.log('atualizado');
     } else {
-      console.log('Criar Parametros');
-      console.log(data);
-      const params: ISystemParamsDTO = {
-        salaryPerMonth: parseFloat(data.salary.replace('.', '')),
-        workingHoursPerMonth: parseFloat(data.hours.replace('.', '')),
-        profit: parseFloat(data.percent.replace('.', '')),
-      };
       onPostSystemParams(params);
     }
   }
@@ -92,6 +99,11 @@ const SystemParamsForm = () => {
           errors={errors.hours?.message ? errors.hours.message : ''}
           setFormValue={setValue}
           setStateValue={setTimeValue}
+          initialValue={
+            systemParamsList
+              ? systemParamsList[0].workingHoursPerMonth.toString()
+              : ''
+          }
         />
         <div className="w-full flex justify-center pt-3">
           <p className="font-bold text-[20px]">
@@ -105,6 +117,9 @@ const SystemParamsForm = () => {
           registerName="percent"
           errors={errors.percent?.message ? errors.percent.message : ''}
           setFormValue={setValue}
+          initialValue={
+            systemParamsList ? systemParamsList[0].profit.toString() : ''
+          }
         />
         <div className="w-full"></div>
         <div className="w-full"></div>
@@ -114,7 +129,7 @@ const SystemParamsForm = () => {
           variant="contained"
           className="bg-gray-200 hover:bg-gray-300 text-gray-500 h-12 rounded-xl font-bold"
         >
-          <KeyboardReturn />
+          <KeyboardReturn onClick={() => router.push(BUDGET_ROUTS.home)} />
         </Button>
         <Button
           variant="contained"

@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 
@@ -10,6 +10,7 @@ interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFormValue: UseFormSetValue<any>;
   setStateValue?: (value: string) => void;
+  initialValue?: string;
 }
 
 const InputPercentFormat = ({
@@ -18,13 +19,21 @@ const InputPercentFormat = ({
   registerName,
   setFormValue,
   setStateValue,
+  initialValue = '',
 }: Props) => {
   const inputProps = {
     label: label,
     fullWidth: true,
   };
 
-  const [percentValue, setPercentValue] = useState<string>('');
+  const [percentValue, setPercentValue] = useState<string>(initialValue);
+
+  useEffect(() => {
+    if (initialValue !== '') {
+      setPercentValue(initialValue);
+      setFormValue(registerName, initialValue);
+    }
+  }, [initialValue]);
 
   function OnChangeValue(value: string) {
     const valueOnlyNumber = value.slice(0, -2);

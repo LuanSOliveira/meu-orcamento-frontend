@@ -10,3 +10,5 @@
 
 // SYSTEM PARAMS QUERIES
 export * from './SystemParamsQueries/useGetSystemParams';
+export * from './SystemParamsQueries/usePatchSystemParams';
+export * from './SystemParamsQueries/usePostSystemParams';

@@ -31,6 +31,7 @@ const InputMonetaryFormat = ({
   useEffect(() => {
     if (initialValue !== '') {
       setMonetaryValue(initialValue);
+      setFormValue(registerName, initialValue);
     }
   }, [initialValue]);
 
