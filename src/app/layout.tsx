@@ -21,11 +21,15 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={inter.className}>
         <Providers>
-          <div className="flex w-screen h-screen ">
+          <div className="flex w-full h-full ">
             <Sidebar />
             <div className="w-full">
               <Header />
-              {children}
+              <div className="px-4 pt-4">
+                <div className="pt-4 px-8 border rounded shadow-md h-full min-h-[300px] max-h-[800px] overflow-y-auto">
+                  {children}
+                </div>
+              </div>
             </div>
           </div>
         </Providers>

@@ -9,7 +9,10 @@ const Header = () => {
 
   return (
     <div className="flex items-center px-4 py-2 w-full border-b-2 border-budget-standard">
-      <MenuIcon onClick={() => dispatch(changeSideBarState())} />
+      <MenuIcon
+        className="cursor-pointer"
+        onClick={() => dispatch(changeSideBarState())}
+      />
       <div className="flex w-full justify-end">
         <img
           width="60"
