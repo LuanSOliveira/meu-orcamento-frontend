@@ -9,3 +9,4 @@
 // OTHER MATERIAL QUERIES
 
 // SYSTEM PARAMS QUERIES
+export * from './SystemParamsQueries/useGetSystemParams';

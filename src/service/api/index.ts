@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { API_URL } from '@/util';
+// import { API_URL } from '@/util';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 interface Api {
@@ -30,7 +30,8 @@ interface Api {
 
 export const ApiFactory = (/*token?: string | null*/): Api => {
   const axiosInstace = axios.create({
-    baseURL: API_URL,
+    baseURL: 'http://localhost:3001',
+    // baseURL: API_URL,
     //   headers: {
     //     Authorization: `Bearer ${token}`,
     //   },
