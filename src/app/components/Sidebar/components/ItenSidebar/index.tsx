@@ -27,7 +27,11 @@ const ItenSidebar = ({ item }: Props) => {
   return (
     <>
       <ListItemButton
-        onClick={item.label == 'Configurações' ? handleClick : undefined}
+        onClick={
+          item.label == 'Configurações'
+            ? handleClick
+            : () => router.push(item.route)
+        }
       >
         <ListItemIcon>{item.icone}</ListItemIcon>
         <ListItemText primary={item.label} />

@@ -12,6 +12,7 @@ export interface ListaProps {
   label: string;
   icone: React.ReactNode;
   expand: boolean;
+  route: string;
   children: ListaConfig[];
 }
 
@@ -20,12 +21,14 @@ export const ListSideBarItens: ListaProps[] = [
     label: 'Inicio',
     icone: <HomeIcon sx={{ color: 'white' }} />,
     expand: false,
+    route: BUDGET_ROUTS.home,
     children: [],
   },
   {
     label: 'Configurações',
     icone: <SettingsIcon sx={{ color: 'white' }} />,
     expand: true,
+    route: '',
     children: [
       {
         label: 'Linhas',
@@ -45,6 +48,7 @@ export const ListSideBarItens: ListaProps[] = [
     label: 'Orçamento',
     icone: <MonetizationOnIcon sx={{ color: 'white' }} />,
     expand: false,
+    route: BUDGET_ROUTS.budget,
     children: [],
   },
 ];
