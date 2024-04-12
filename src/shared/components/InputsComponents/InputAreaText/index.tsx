@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { TextField } from '@mui/material';
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 interface Props {
   label: string;
@@ -8,14 +8,16 @@ interface Props {
   registerName: string;
   required?: boolean;
   errors?: string;
+  viewFormValue: UseFormWatch<any>;
 }
 
-const InputText = ({
+const InputAreaText = ({
   label,
   formRegister,
   registerName,
   required = false,
   errors,
+  viewFormValue,
 }: Props) => {
   return (
     <>
@@ -24,6 +26,8 @@ const InputText = ({
           <TextField
             label={label}
             fullWidth={true}
+            multiline
+            rows={4}
             {...formRegister(registerName)}
           />
           {errors && <span style={{ color: 'red' }}>{errors}</span>}
@@ -32,6 +36,8 @@ const InputText = ({
         <TextField
           label={label}
           fullWidth={true}
+          multiline
+          rows={4}
           {...formRegister(registerName)}
         />
       )}
@@ -39,4 +45,4 @@ const InputText = ({
   );
 };
 
-export default InputText;
+export default InputAreaText;

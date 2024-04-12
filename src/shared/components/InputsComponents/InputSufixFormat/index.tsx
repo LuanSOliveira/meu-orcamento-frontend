@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
@@ -5,18 +6,17 @@ import { NumericFormat } from 'react-number-format';
 
 interface Props {
   label: string;
-  timeTipe: string;
+  sufix: string;
   registerName: string;
   errors: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFormValue: UseFormSetValue<any>;
   setStateValue?: (value: string) => void;
   initialValue?: string;
 }
 
-const InputTimeFormat = ({
+const InputSufixFormat = ({
   label,
-  timeTipe,
+  sufix,
   errors,
   registerName,
   setFormValue,
@@ -28,18 +28,18 @@ const InputTimeFormat = ({
     fullWidth: true,
   };
 
-  const [timeValue, setTimeValue] = useState<string>(initialValue);
+  const [sufixInputValue, setSufixInputValue] = useState<string>(initialValue);
 
   useEffect(() => {
     if (initialValue !== '') {
-      setTimeValue(initialValue);
+      setSufixInputValue(initialValue);
       setFormValue(registerName, initialValue);
     }
   }, [initialValue]);
 
   function OnChangeValue(value: string) {
     const valueOnlyNumber = value.slice(0, -2);
-    setTimeValue(valueOnlyNumber);
+    setSufixInputValue(valueOnlyNumber);
     setFormValue(registerName, valueOnlyNumber);
     if (setStateValue) {
       setStateValue(valueOnlyNumber);
@@ -49,18 +49,18 @@ const InputTimeFormat = ({
   return (
     <div className="w-full">
       <NumericFormat
-        value={timeValue}
+        value={sufixInputValue}
         customInput={TextField}
         {...inputProps}
         allowNegative={false}
-        suffix={` ${timeTipe}`}
+        suffix={` ${sufix}`}
         onChange={(e) => OnChangeValue(e.target.value)}
       />
-      {errors && timeValue.length < 1 && (
+      {errors && sufixInputValue.length < 1 && (
         <span style={{ color: 'red' }}>{errors}</span>
       )}
     </div>
   );
 };
 
-export default InputTimeFormat;
+export default InputSufixFormat;

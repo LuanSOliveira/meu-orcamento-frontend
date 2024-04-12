@@ -7,6 +7,8 @@
 // LINE TYPE QUERIES
 
 // OTHER MATERIAL QUERIES
+export * from './OtherMaterialsQueries/useGetOtherMaterials';
+export * from './OtherMaterialsQueries/usePostOtherMaterials';
 
 // SYSTEM PARAMS QUERIES
 export * from './SystemParamsQueries/useGetSystemParams';
