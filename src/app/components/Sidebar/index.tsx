@@ -33,7 +33,6 @@ const Sidebar = () => {
           subheader={
             <ListSubheader
               sx={{
-                width: '100%',
                 padding: 0,
                 marginLeft: 7,
                 backgroundColor: standardColor,
