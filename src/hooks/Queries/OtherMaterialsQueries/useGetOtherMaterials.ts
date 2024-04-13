@@ -1,11 +1,12 @@
 import { IOtherMaterials } from '@/app/(Pages)/materiais/types';
 import { ApiFactory } from '@/service/api';
-import { SearchQueryParams } from '@/shared/types';
+import { IListsInformations, SearchQueryParams } from '@/shared/types';
 import { createSearchParams } from '@/util';
 import { useQuery } from 'react-query';
 
 interface GetOtherMaterialsParams {
   items: IOtherMaterials[];
+  meta: IListsInformations;
 }
 
 export const useGetOtherMaterials = (

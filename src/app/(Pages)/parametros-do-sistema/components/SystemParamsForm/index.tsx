@@ -7,7 +7,7 @@ import {
   SystemParamsFormProps,
   systemParamsFormResolver,
 } from '@/shared/formSchemas';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useGetSystemParams,
   usePatchSystemParams,
@@ -46,6 +46,13 @@ const SystemParamsForm = () => {
   const [monetaryValue, setMonetaryValue] = useState<string>('');
   const [timeValue, setTimeValue] = useState<string>('');
 
+  useEffect(() => {
+    if (systemParamsList) {
+      setMonetaryValue(systemParamsList[0]?.salaryPerMonth.toString());
+      setTimeValue(systemParamsList[0]?.workingHoursPerMonth.toString());
+    }
+  }, [systemParamsList]);
+
   function OnMathSalaryPerHours() {
     if (
       monetaryValue.length > 0 &&
@@ -77,6 +84,7 @@ const SystemParamsForm = () => {
 
   return (
     <form className="flex flex-col gap-5">
+      <p onClick={() => console.log(monetaryValue)}>teste</p>
       <div className="flex w-full gap-5">
         <InputMonetaryFormat
           label="Salário Mensal"

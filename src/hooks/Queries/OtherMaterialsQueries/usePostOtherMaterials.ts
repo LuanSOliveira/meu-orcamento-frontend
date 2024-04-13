@@ -1,10 +1,13 @@
 import { IOtherMaterialsDTO } from '@/app/(Pages)/materiais/types';
 import { ApiFactory } from '@/service/api';
+import { BUDGET_ROUTS } from '@/shared/routes/routes';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
 
 export const usePostOtherMaterials = () => {
   const api = ApiFactory();
+  const router = useRouter();
   const mutation = useMutation({
     mutationFn: (postOtherMaterials: IOtherMaterialsDTO) => {
       return api
@@ -12,7 +15,7 @@ export const usePostOtherMaterials = () => {
         .then((response) => response.data);
     },
     onSuccess: () => {
-      console.log('ok');
+      router.push(BUDGET_ROUTS.materials);
     },
     onError: (err: AxiosError<unknown, unknown>) => {
       console.log(err);

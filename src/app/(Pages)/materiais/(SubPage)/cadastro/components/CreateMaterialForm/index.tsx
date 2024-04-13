@@ -137,7 +137,6 @@ const CreateMaterialForm = () => {
         <InputAreaText
           label="Outras Informações"
           formRegister={register}
-          viewFormValue={watch}
           registerName="otherInformations"
         />
       </div>

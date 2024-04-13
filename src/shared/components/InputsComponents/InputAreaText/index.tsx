@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { TextField } from '@mui/material';
-import { UseFormRegister, UseFormWatch } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 
 interface Props {
   label: string;
@@ -8,7 +8,6 @@ interface Props {
   registerName: string;
   required?: boolean;
   errors?: string;
-  viewFormValue: UseFormWatch<any>;
 }
 
 const InputAreaText = ({
@@ -17,7 +16,6 @@ const InputAreaText = ({
   registerName,
   required = false,
   errors,
-  viewFormValue,
 }: Props) => {
   return (
     <>
