@@ -15,12 +15,24 @@ interface IOption {
 
 interface Props {
   filterOptions: IOption[];
+  setFilterValue: (value: string) => void;
+  setFilterType: (value: string) => void;
 }
 
-const FilterLists = ({ filterOptions }: Props) => {
+const FilterLists = ({
+  filterOptions,
+  setFilterValue,
+  setFilterType,
+}: Props) => {
   const [selectedOption, setSelectedOption] = useState<string>(
     filterOptions[0].value,
   );
+
+  function OnChangeType(value: string) {
+    setFilterType(value);
+    setSelectedOption(value);
+  }
+
   return (
     <div className="flex gap-3 w-full">
       <FormControl fullWidth>
@@ -32,7 +44,7 @@ const FilterLists = ({ filterOptions }: Props) => {
           fullWidth
           label="Filtrar Por"
           value={selectedOption}
-          onChange={(e) => setSelectedOption(e.target.value)}
+          onChange={(e) => OnChangeType(e.target.value)}
         >
           {filterOptions.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -48,6 +60,7 @@ const FilterLists = ({ filterOptions }: Props) => {
           label="Buscar"
           endAdornment={<SearchOutlined sx={{ color: 'gray' }} />}
           fullWidth
+          onChange={(e) => setFilterValue(e.target.value)}
         />
       </FormControl>
     </div>

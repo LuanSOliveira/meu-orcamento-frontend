@@ -6,17 +6,41 @@ import { BUDGET_ROUTS } from '@/shared/routes/routes';
 import { useRouter } from 'next/navigation';
 import MaterialsItem from '../MaterialsItem';
 import FilterLists from '@/shared/components/FilterLists';
+import { useEffect, useState } from 'react';
 
 const MaterialsList = () => {
   const router = useRouter();
-  const { data: otherMaterialList } = useGetOtherMaterials({});
   const filterOptions = [{ value: 'name', label: 'Nome' }];
+  const [filter, setFilter] = useState<string>('');
+  const [filterType, setFilterType] = useState<string>('name');
+  const { data: otherMaterialList, refetch } = useGetOtherMaterials({
+    filter: filter,
+    field: filterType,
+  });
+
+  useEffect(() => {
+    if (filter.length >= 3) {
+      refetch();
+    } else if (filter.length === 0) {
+      refetch();
+    }
+  }, [filter]);
+
+  useEffect(() => {
+    if (filter.length > 0) {
+      setFilter('');
+    }
+  }, [filterType]);
 
   return (
     <div>
       <div className="flex justify-between">
         <div className="w-1/2">
-          <FilterLists filterOptions={filterOptions} />
+          <FilterLists
+            filterOptions={filterOptions}
+            setFilterValue={setFilter}
+            setFilterType={setFilterType}
+          />
         </div>
         <CustomButton
           buttonTheme="primary"
