@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import MaterialsItem from '../MaterialsItem';
 import FilterLists from '@/shared/components/FilterLists';
 import { useEffect, useState } from 'react';
-import { Pagination } from '@mui/material';
+import ListPaginator from '@/shared/components/ListPaginator';
 import { listLimit } from '@/shared/constants';
 
 const MaterialsList = () => {
@@ -32,14 +32,17 @@ const MaterialsList = () => {
 
   useEffect(() => {
     if (filter.length >= 3) {
-      refetch();
+      setSelectedPage(1);
+      setTimeout(() => refetch(), 100);
     } else if (filter.length === 0) {
-      refetch();
+      setSelectedPage(1);
+      setTimeout(() => refetch(), 100);
     }
   }, [filter]);
 
   useEffect(() => {
     if (filter.length > 0) {
+      setSelectedPage(1);
       setFilter('');
     }
   }, [filterType]);
@@ -47,10 +50,6 @@ const MaterialsList = () => {
   useEffect(() => {
     refetch();
   }, [selectedPage]);
-
-  function ChangePage(event: React.ChangeEvent<unknown>, value: number) {
-    setSelectedPage(value);
-  }
 
   return (
     <div>
@@ -82,13 +81,11 @@ const MaterialsList = () => {
           <p>Nenhum Item Encontrado</p>
         </div>
       )}
-      <div className="w-full flex justify-center mb-5">
-        <Pagination
-          count={otherMaterialList?.meta.totalPages}
-          page={selectedPage}
-          onChange={ChangePage}
-        />
-      </div>
+      <ListPaginator
+        count={otherMaterialList?.meta.totalPages}
+        page={selectedPage}
+        setSelectedPage={setSelectedPage}
+      />
     </div>
   );
 };
