@@ -7,6 +7,7 @@ import { List, ListSubheader } from '@mui/material';
 import React from 'react';
 import { ListSideBarItens } from './data/index';
 import ItenSidebar from './components/ItenSidebar/index';
+import { fontDancingScript } from '@/fonts';
 
 const Sidebar = () => {
   const sidebarState = useAppSelector((state) => state.sidebar);
@@ -32,11 +33,11 @@ const Sidebar = () => {
           sx={{ color: 'white' }}
           subheader={
             <ListSubheader
+              className="flex justify-center py-5"
               sx={{
-                padding: 0,
-                marginLeft: 7,
                 backgroundColor: standardColor,
-                fontSize: 20,
+                fontSize: 30,
+                fontFamily: fontDancingScript.style,
                 color: 'white',
               }}
             >

@@ -1,4 +1,5 @@
 import { IOtherMaterialsDTO } from '@/app/(Pages)/materiais/types';
+import { useToastify } from '@/hooks/Toastify';
 import { ApiFactory } from '@/service/api';
 import { BUDGET_ROUTS } from '@/shared/routes/routes';
 import { AxiosError } from 'axios';
@@ -15,9 +16,11 @@ export const usePostOtherMaterials = () => {
         .then((response) => response.data);
     },
     onSuccess: () => {
+      useToastify.success('Material cadastrado com sucesso.');
       router.push(BUDGET_ROUTS.materials);
     },
     onError: (err: AxiosError<unknown, unknown>) => {
+      useToastify.error('Ocorreu um erro.');
       console.log(err);
     },
   });

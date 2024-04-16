@@ -5,13 +5,33 @@ import {
 } from '@mui/icons-material';
 import { IOtherMaterials } from '../../types';
 import { Tooltip } from '@mui/material';
+import { useState } from 'react';
+import DeleteItemListModal from '@/shared/components/Modal/DeleteItemListModal';
+import {
+  GetOtherMaterialsParams,
+  useDeleteOtherMaterials,
+} from '@/hooks/Queries';
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from 'react-query';
 
 interface Props {
   material: IOtherMaterials;
+  refetch: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+  ) => Promise<QueryObserverResult<GetOtherMaterialsParams, unknown>>;
 }
 
-const MaterialsItem = ({ material }: Props) => {
+const MaterialsItem = ({ material, refetch }: Props) => {
   const noImageLink = 'https://img.icons8.com/fluency/70/no-camera.png';
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const { onDeleteOtherMaterial } = useDeleteOtherMaterials(
+    material.id,
+    refetch,
+  );
+
   function MathValue() {
     const value: number =
       parseFloat(material.value.replace('.', '').replace(',', '.')) /
@@ -21,6 +41,15 @@ const MaterialsItem = ({ material }: Props) => {
 
   return (
     <div className="flex items-center justify-between gap-3 p-3 border rounded shadow-md">
+      <DeleteItemListModal
+        modalStatus={openModal}
+        setModalStatus={setOpenModal}
+        titleText="DELETAR MATERIAL"
+        itemName={material.name}
+        confirmActionText="Confirmar"
+        cancelActionText="Cancelar"
+        confirmAction={onDeleteOtherMaterial}
+      />
       <div className="flex gap-3 items-center w-2/4">
         <img
           className="rounded-full shadow"
@@ -80,7 +109,10 @@ const MaterialsItem = ({ material }: Props) => {
           enterDelay={100}
           leaveDelay={100}
         >
-          <DeleteOutlineOutlined className="cursor-pointer text-red-800" />
+          <DeleteOutlineOutlined
+            className="cursor-pointer text-red-800"
+            onClick={() => setOpenModal(true)}
+          />
         </Tooltip>
       </div>
     </div>

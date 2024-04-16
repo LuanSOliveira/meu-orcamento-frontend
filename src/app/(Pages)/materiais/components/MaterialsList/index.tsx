@@ -9,9 +9,15 @@ import FilterLists from '@/shared/components/FilterLists';
 import { useEffect, useState } from 'react';
 import ListPaginator from '@/shared/components/ListPaginator';
 import { listLimit } from '@/shared/constants';
+import { useDispatch } from 'react-redux';
+import { changeProgressBarState } from '@/store/reducers/ProgressBarSlice';
+import { useAppSelector } from '@/store/hooks';
+import { CircularProgress } from '@mui/material';
 
 const MaterialsList = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const spiner = useAppSelector((state) => state.progressBar);
   const filterOptions = [
     { value: 'name', label: 'Nome' },
     { value: 'type', label: 'Tipo' },
@@ -32,6 +38,7 @@ const MaterialsList = () => {
 
   useEffect(() => {
     if (filter.length >= 3) {
+      dispatch(changeProgressBarState({ value: true }));
       setSelectedPage(1);
       setTimeout(() => refetch(), 100);
     } else if (filter.length === 0) {
@@ -42,12 +49,14 @@ const MaterialsList = () => {
 
   useEffect(() => {
     if (filter.length > 0) {
+      dispatch(changeProgressBarState({ value: true }));
       setSelectedPage(1);
       setFilter('');
     }
   }, [filterType]);
 
   useEffect(() => {
+    dispatch(changeProgressBarState({ value: true }));
     refetch();
   }, [selectedPage]);
 
@@ -70,22 +79,36 @@ const MaterialsList = () => {
           onClickButton={() => router.push(BUDGET_ROUTS.createMaterials)}
         />
       </div>
-      {otherMaterialList ? (
-        <div className="my-6 flex flex-col gap-4">
-          {otherMaterialList.items?.map((material) => (
-            <MaterialsItem key={material.id} material={material} />
-          ))}
+      {spiner.value ? (
+        <div className="w-full mt-6 p-4 flex justify-center text-gray-400 text-xl font-bold">
+          <CircularProgress color="inherit" />
         </div>
       ) : (
-        <div className="w-full mt-6 p-4 flex justify-center text-gray-400 text-xl font-bold">
-          <p>Nenhum Item Encontrado</p>
-        </div>
+        <>
+          {otherMaterialList ? (
+            <div className="my-6 flex flex-col gap-4">
+              {otherMaterialList.items?.map((material) => (
+                <MaterialsItem
+                  key={material.id}
+                  material={material}
+                  refetch={refetch}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="w-full mt-6 p-4 flex justify-center text-gray-400 text-xl font-bold">
+              <p>Nenhum Item Encontrado</p>
+            </div>
+          )}
+        </>
       )}
-      <ListPaginator
-        count={otherMaterialList?.meta.totalPages}
-        page={selectedPage}
-        setSelectedPage={setSelectedPage}
-      />
+      {otherMaterialList && (
+        <ListPaginator
+          count={otherMaterialList?.meta.totalPages}
+          page={selectedPage}
+          setSelectedPage={setSelectedPage}
+        />
+      )}
     </div>
   );
 };

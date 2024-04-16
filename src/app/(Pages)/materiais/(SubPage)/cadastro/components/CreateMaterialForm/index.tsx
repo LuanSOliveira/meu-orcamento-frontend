@@ -11,17 +11,20 @@ import {
   OtherMaterialsFormResolver,
 } from '@/shared/formSchemas';
 import { BUDGET_ROUTS } from '@/shared/routes/routes';
+import { changeProgressBarState } from '@/store/reducers/ProgressBarSlice';
 import { KeyboardReturn } from '@mui/icons-material';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
 const CreateMaterialForm = () => {
   const [measure, setMeasure] = useState<string>('weight');
   const [monetaryValue, setMonetaryValue] = useState<string>('');
   const [measureValue, setMeasureValue] = useState<string>('');
   const router = useRouter();
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     setValue,
@@ -63,6 +66,7 @@ const CreateMaterialForm = () => {
   }
 
   function OnSaveForm(data: OtherMaterialsFormProps) {
+    dispatch(changeProgressBarState({ value: true }));
     onPostOtherMaterials(data);
   }
 

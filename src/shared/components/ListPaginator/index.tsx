@@ -12,7 +12,7 @@ const ListPaginator = ({ count, page, setSelectedPage }: Props) => {
   }
 
   return (
-    <div className="w-full flex justify-center mb-5">
+    <div className="w-full flex justify-center">
       <Pagination count={count} page={page} onChange={ChangePage} />
     </div>
   );

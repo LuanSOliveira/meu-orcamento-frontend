@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+import { useAppSelector } from '@/store/hooks';
 import { ThemeProvider } from '@emotion/react';
-import { Button, createTheme } from '@mui/material';
+import { Button, CircularProgress, createTheme } from '@mui/material';
 
 interface Props {
   buttonTheme: 'primary' | 'secondary';
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const CustomButton = ({ buttonTheme, type, onClickButton, label }: Props) => {
+  const spiner = useAppSelector((state) => state.progressBar);
   const theme = createTheme({
     palette: {
       primary: {
@@ -64,14 +66,30 @@ const CustomButton = ({ buttonTheme, type, onClickButton, label }: Props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Button
-        variant="contained"
-        color={buttonTheme}
-        sx={ButtonTypeFormat()}
-        onClick={onClickButton}
-      >
-        {label}
-      </Button>
+      {type === 'save' && spiner.value ? (
+        <Button variant="contained" color={buttonTheme} sx={ButtonTypeFormat()}>
+          <CircularProgress
+            size={24}
+            sx={{
+              color: 'white',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              marginTop: '-12px',
+              marginLeft: '-12px',
+            }}
+          />
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color={buttonTheme}
+          sx={ButtonTypeFormat()}
+          onClick={onClickButton}
+        >
+          {label}
+        </Button>
+      )}
     </ThemeProvider>
   );
 };

@@ -84,7 +84,6 @@ const SystemParamsForm = () => {
 
   return (
     <form className="flex flex-col gap-5">
-      <p onClick={() => console.log(monetaryValue)}>teste</p>
       <div className="flex w-full gap-5">
         <InputMonetaryFormat
           label="Salário Mensal"
