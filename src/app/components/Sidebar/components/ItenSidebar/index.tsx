@@ -8,6 +8,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { ListaProps } from '../../data/index';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   item: ListaProps;
@@ -15,6 +16,7 @@ interface Props {
 
 const ItenSidebar = ({ item }: Props) => {
   const [open, setOpen] = React.useState(false);
+  const router = useRouter();
 
   const handleClick = () => {
     setOpen(!open);
@@ -25,7 +27,11 @@ const ItenSidebar = ({ item }: Props) => {
   return (
     <>
       <ListItemButton
-        onClick={item.label == 'Configurações' ? handleClick : undefined}
+        onClick={
+          item.label == 'Configurações'
+            ? handleClick
+            : () => router.push(item.route)
+        }
       >
         <ListItemIcon>{item.icone}</ListItemIcon>
         <ListItemText primary={item.label} />
@@ -40,8 +46,11 @@ const ItenSidebar = ({ item }: Props) => {
 
       <Collapse in={open} timeout="auto">
         {listConfig.map((item) => (
-          <ListItemButton key={item} sx={{ pl: 9 }}>
-            <ListItemText primary={item} />
+          <ListItemButton key={item.label} sx={{ pl: 9 }}>
+            <ListItemText
+              primary={item.label}
+              onClick={() => router.push(item.route)}
+            />
           </ListItemButton>
         ))}
       </Collapse>
