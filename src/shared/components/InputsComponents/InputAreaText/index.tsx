@@ -10,7 +10,7 @@ interface Props {
   errors?: string;
 }
 
-const InputText = ({
+const InputAreaText = ({
   label,
   formRegister,
   registerName,
@@ -24,6 +24,8 @@ const InputText = ({
           <TextField
             label={label}
             fullWidth={true}
+            multiline
+            rows={4}
             {...formRegister(registerName)}
           />
           {errors && <span style={{ color: 'red' }}>{errors}</span>}
@@ -32,6 +34,8 @@ const InputText = ({
         <TextField
           label={label}
           fullWidth={true}
+          multiline
+          rows={4}
           {...formRegister(registerName)}
         />
       )}
@@ -39,4 +43,4 @@ const InputText = ({
   );
 };
 
-export default InputText;
+export default InputAreaText;

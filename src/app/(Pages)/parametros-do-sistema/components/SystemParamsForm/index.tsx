@@ -1,16 +1,13 @@
 'use client';
 
 import InputMonetaryFormat from '@/shared/components/InputsComponents/InputMonetaryFormat';
-import InputPercentFormat from '@/shared/components/InputsComponents/InputPercentFormat';
-import InputTimeFormat from '@/shared/components/InputsComponents/InputTimeFormat';
-import { Button } from '@mui/material';
 import KeyboardReturn from '@mui/icons-material/KeyboardReturn';
 import { useForm } from 'react-hook-form';
 import {
   SystemParamsFormProps,
   systemParamsFormResolver,
 } from '@/shared/formSchemas';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useGetSystemParams,
   usePatchSystemParams,
@@ -19,13 +16,15 @@ import {
 import { ISystemParamsDTO } from '../../types';
 import { useRouter } from 'next/navigation';
 import { BUDGET_ROUTS } from '@/shared/routes/routes';
+import CustomButton from '@/shared/components/CustomButton';
+import InputSufixFormat from '@/shared/components/InputsComponents/InputSufixFormat';
 
 const SystemParamsForm = () => {
   const router = useRouter();
   const { data: systemParamsList } = useGetSystemParams({});
   const { onPostSystemParams } = usePostSystemParams();
   const { onPatchSystemParams } = usePatchSystemParams(
-    systemParamsList ? systemParamsList[0].id : '',
+    systemParamsList ? systemParamsList[0]?.id : '',
   );
   const {
     handleSubmit,
@@ -47,6 +46,13 @@ const SystemParamsForm = () => {
   const [monetaryValue, setMonetaryValue] = useState<string>('');
   const [timeValue, setTimeValue] = useState<string>('');
 
+  useEffect(() => {
+    if (systemParamsList) {
+      setMonetaryValue(systemParamsList[0]?.salaryPerMonth.toString());
+      setTimeValue(systemParamsList[0]?.workingHoursPerMonth.toString());
+    }
+  }, [systemParamsList]);
+
   function OnMathSalaryPerHours() {
     if (
       monetaryValue.length > 0 &&
@@ -65,13 +71,12 @@ const SystemParamsForm = () => {
 
   function OnSaveForm(data: SystemParamsFormProps) {
     const params: ISystemParamsDTO = {
-      salaryPerMonth: parseFloat(data.salary.replace('.', '')),
-      workingHoursPerMonth: parseFloat(data.hours.replace('.', '')),
-      profit: parseFloat(data.percent.replace('.', '')),
+      salaryPerMonth: data.salary,
+      workingHoursPerMonth: data.hours,
+      profit: data.percent,
     };
     if (systemParamsList && systemParamsList?.length > 0) {
       onPatchSystemParams(params);
-      console.log('atualizado');
     } else {
       onPostSystemParams(params);
     }
@@ -79,6 +84,7 @@ const SystemParamsForm = () => {
 
   return (
     <form className="flex flex-col gap-5">
+      <p onClick={() => console.log(monetaryValue)}>teste</p>
       <div className="flex w-full gap-5">
         <InputMonetaryFormat
           label="Salário Mensal"
@@ -88,20 +94,20 @@ const SystemParamsForm = () => {
           setStateValue={setMonetaryValue}
           initialValue={
             systemParamsList
-              ? systemParamsList[0].salaryPerMonth.toString()
+              ? systemParamsList[0]?.salaryPerMonth.toString()
               : ''
           }
         />
-        <InputTimeFormat
+        <InputSufixFormat
           label="Horas de Trabalho Mensal"
-          timeTipe="h"
+          sufix="h"
           registerName="hours"
           errors={errors.hours?.message ? errors.hours.message : ''}
           setFormValue={setValue}
           setStateValue={setTimeValue}
           initialValue={
             systemParamsList
-              ? systemParamsList[0].workingHoursPerMonth.toString()
+              ? systemParamsList[0]?.workingHoursPerMonth.toString()
               : ''
           }
         />
@@ -112,32 +118,32 @@ const SystemParamsForm = () => {
         </div>
       </div>
       <div className="flex gap-5 w-full">
-        <InputPercentFormat
+        <InputSufixFormat
           label="% Lucro"
+          sufix="%"
           registerName="percent"
           errors={errors.percent?.message ? errors.percent.message : ''}
           setFormValue={setValue}
           initialValue={
-            systemParamsList ? systemParamsList[0].profit.toString() : ''
+            systemParamsList ? systemParamsList[0]?.profit.toString() : ''
           }
         />
         <div className="w-full"></div>
         <div className="w-full"></div>
       </div>
       <div className="flex justify-between my-10">
-        <Button
-          variant="contained"
-          className="bg-gray-200 hover:bg-gray-300 text-gray-500 h-12 rounded-xl font-bold"
-        >
-          <KeyboardReturn onClick={() => router.push(BUDGET_ROUTS.home)} />
-        </Button>
-        <Button
-          variant="contained"
-          className="bg-budget-standard hover:bg-[#2cb8a7] h-12 rounded-xl font-bold min-w-32 text-lg"
-          onClick={handleSubmit(OnSaveForm)}
-        >
-          SALVAR
-        </Button>
+        <CustomButton
+          buttonTheme="secondary"
+          type="back"
+          label={<KeyboardReturn />}
+          onClickButton={() => router.push(BUDGET_ROUTS.home)}
+        />
+        <CustomButton
+          buttonTheme="primary"
+          type="save"
+          label="SALVAR"
+          onClickButton={handleSubmit(OnSaveForm)}
+        />
       </div>
     </form>
   );
